@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "GetAll";
+}
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <div class="d-flex justify-content-between">
+        <p class="h2"></p>
+
+        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalForm" id="btnModal">Agregar</button>
+    </div>
+    <h1>Libros</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <style>
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            width: 300px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .book-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <input type="hidden" id="txtIdLibro" value="" />
+    <input type="hidden" id="txtIdEditorial" value="" />
+
+    <div class="container">
+        <div class="row" id="showLibros">
+            <!-- Aquí se generarán las tarjetas de libros dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Modal para agregar libro -->
+    <div class="modal fade" id="modalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true" style="background-color:#ddeceb">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#ddeceb; border-color: cadetblue;  border-width: 5px;">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalLabel">Agregar Nuevo Libro</h1>
+                </div>
+                <hr style="width:490px; height:5px; background-color: #25716d; " />
+
+                <div class="modal-body">
+                    <div class="row g-2">
+                        <div class="alert alert-info" role="alert" id="alertForm" style="display: none;">
+                            Por favor, ingresa los datos solicitados.
+                        </div>
+
+                        <div class="col-12">
+                            <input type="hidden" id="txtIdLibro" value="" />
+                            <label for="txtAutor">Autor</label>
+                            <input type="text" class="form-control" id="txtAutor" />
+                            <label class="invalido" id="lblAutor"></label>
+                        </div>
+                        <div class="col-12">
+                            <label for="txtTitulo">Titulo del Libro</label>
+                            <input type="text" class="form-control" id="txtTitulo" />
+                            <label class="invalido" id="lblTitulo"></label>
+                        </div>
+                        <div class="col-12">
+                            <label for="txtAñoPublicación">Año de Publicación</label>
+                            <input type="date" class="form-control" id="txtAñoPublicacion" />
+                            <label class="invalido" id="lblAñoPublicación"></label>
+                        </div>
+                        <div class="col-12">
+                            <label for="txtImagen">Imagen</label>
+                            <input type="text" class="form-control" id="txtImagen" />
+                            <label class="invalido" id="lblImagen"></label>
+                        </div>
+                        <div class="col-12">
+                            <label for="ddlEditorial">Editorial</label>
+                            <select id="ddlEditorial" class="form-select">
+                            </select>
+                            <label class="invalido" id="lblEditorial"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelForm">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnForm">Guardar</button>
+                    <!-- Botón de actualización oculto -->
+                    <button type="button" class="btn btn-outline-success" id="btnFormUpdate" style="display: none;">Actualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Final del Modal -->
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/Libro.js"></script>
+</body>
+</html>
+
+
+
