@@ -27,7 +27,7 @@
                                         <p class="card-text"><strong>Año de Publicación:</strong> ${fechaPublicacion}</p>
                                         <p class="card-text"><strong>Editorial:</strong> ${nombreEditorial}</p>
                                         <button type="button" class="btn btn-outline-secondary mr-2" onclick="Update(${libro.IdLibro})">Editar</button>
-                                        <button type="button" class="btn btn-outline-danger" onclick="Delete(${libro.IdLibro})">Eliminar</button>
+                                        <button type="button" class="btn btn-outline-danger delete-libro-btn" data-id="${libro.IdLibro}">Eliminar</button>
                                     </div>
                                 </div>
                             </div>`;
@@ -117,6 +117,42 @@
         });
     }
 
+    // Función para eliminar un libro
+    function EliminarLibro(idLibro) {
+        if (confirm("¿Estás seguro de que quieres eliminar este libro?")) {
+            $.ajax({
+                url: `https://localhost:7099/api/Libro/Libro/Delete/${idLibro}`,
+                type: "DELETE",
+                dataType: "json",
+                success: function (result) {
+                    if (result.success) {
+                        $("#alertInfo").show().removeClass("alert-danger").addClass("alert-success").text("Libro eliminado correctamente");
+                        LibroGetAll(); // Actualizar la lista de libros después de eliminar
+                    } else {
+                        $("#alertInfo").show().removeClass("alert-success").addClass("alert-danger").text("Error al eliminar libro");
+                    }
+
+                    setTimeout(function () {
+                        $("#alertInfo").hide();
+                    }, 6000);
+                },
+                error: function (error) {
+                    console.log(error);
+                    $("#alertInfo").show().removeClass("alert-success").addClass("alert-danger").text("Error al conectar con el servidor");
+                    setTimeout(function () {
+                        $("#alertInfo").hide();
+                    }, 6000);
+                }
+            });
+        }
+    }
+
+    // Evento click para el botón "Eliminar" usando delegación de eventos
+    $("#showLibros").on("click", ".delete-libro-btn", function () {
+        var idLibro = $(this).data("id");
+        EliminarLibro(idLibro);
+    });
+
     // Evento click para el botón "Guardar" del formulario modal
     $('#btnForm').on("click", function () {
         AddNewLibro();
@@ -128,42 +164,13 @@
         setTimeout(function () {
             normalForm();
         }, 1000);
-    },
-
-
-
-        function Delete(id) {
-            if (confirm("¿Estás seguro de eliminar el empleado de forma permanente?")) {
-                $.ajax({
-                    url: "https://localhost:7099/api/Libro/Libro/Delete/" + id,
-                    type: "Delete",
-                    success: function (result) {
-                        if (result.success) {
-                            EmpleadoGetAll();
-                            Alert("success", "El empleado ha sido eliminado de forma permanente");
-                        } else {
-                            Alert("danger", "Error al eliminar empleado");
-                        }
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            }
-        });
-
-
-
-
-
-
-
+    });
 
     // Función de validación de formulario
     function ValidateForm() {
         var isValid = true;
 
-        // Ejemplo de validación básica, ajustar según tus requisitos
+        // validación 
         if ($("#txtAutor").val().trim() === "") {
             $("#lblAutor").text("Campo requerido").show();
             isValid = false;
@@ -184,8 +191,6 @@
         } else {
             $("#lblAñoPublicacion").hide();
         }
-
-        // Agregar más validaciones según sea necesario
 
         return isValid;
     }
